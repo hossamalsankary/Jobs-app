@@ -1,0 +1,28 @@
+{
+  "name": "job-app",
+  "version": "1.0.0",
+  "description": "this app for searching about jobs",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "go": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/hossamalsankary/jobs-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hossamalsankary/jobs-app/issues"
+  },
+  "homepage": "https://github.com/hossamalsankary/jobs-app#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.0.0",
+    "jshint": "^2.13.4",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.2.10",
+    "nodemon": "^2.0.15"
+  }
+}
