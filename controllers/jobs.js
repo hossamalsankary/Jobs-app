@@ -62,12 +62,13 @@ const jobs = {
           _id: req.body.id,
 
         });
-  
+        if(removeJob == null) throw Error("Job not found");
+        console.log(removeJob)
         res.json(removeJob);
       } catch (error) {
-        console.log(error);
         next(error);
-      }  },
+      } 
+     },
 };
 
 module.exports = jobs;
