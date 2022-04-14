@@ -12,27 +12,28 @@ const res = require("express/lib/response");
 const { required } = require("nodemon/lib/config");
 //const BadRequedt = require("./errors/bad_request.js");
 const erorrHandlerMiddleware = require("./middleware/erorrHandler");
-const notFound = require('./errors/4O4');
-const port = 3000;
-let n = Array();
+const notFound = require("./errors/4O4");
+const port =  process.env.PORT || 3000;
 
 //configure middlware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //Configure Routes
+app.get("/", (req, res) => {
+  let apiLink = "/api/v1/jobs";
+  res.send(`  <a href='${apiLink}'>Jop API LINK </a> `);
+});
 app.use("/api/v1/jobs", job);
 app.use("/api/v1/auth", auth);
-app.get("/" , (req , res)=>{
-  res.send("<href>/api/v1/jobs</href>");
-});
+
 app.use(notFound);
 app.use(erorrHandlerMiddleware);
 const start = async () => {
   try {
     console.log(process.env.DB_URL);
     await connectDB();
-    await app.listen(port, () =>
+     app.listen(port, () =>
       console.log(`Example app listening~ on port ${port}!`)
     );
   } catch (error) {
