@@ -1,6 +1,11 @@
 const User = require("../module/auth");
 const jwt = require("jsonwebtoken");
-
+const {
+  CustomAPIError,
+  UnauthenticatedError,
+  NotFoundError,
+  BadRequestError,
+} = require("../errors/index");
 // here../module/authhold all user Authentication
 const userAuth = {
   register: async (req, res) => {
@@ -17,30 +22,35 @@ const userAuth = {
     }
   },
   //Login Code
-  login: async (req, res) => {
+  login: async (req, res , next) => {
     //Get User Name
     const { name, password } = req.body;
     User.findOne({ name: name }).then(async (userData) => {
-      if (userData != null) {
-        console.log(userData);
-        let isPasswordTrue = await userData.compare(password);
-        console.log(isPasswordTrue);
-        if (isPasswordTrue) {
-          let token = jwt.sign(
-            {
-              data: { name: this.name, email: this.email },
-            },
-            process.env.SECRET,
-            { expiresIn: "30d" }
-          );
+      try {
+        if (userData != null) {
+          let isPasswordTrue = await userData.compare(password);
+          console.log(isPasswordTrue);
 
-          res.json({ data: userData, token: token });
+          if (isPasswordTrue) {
+            let token = jwt.sign(
+              {
+                data: { name: this.name, email: this.email },
+              },
+              process.env.SECRET,
+              { expiresIn: "30d" }
+            );
+  
+            res.json({ data: userData, token: token });
+          } else {
+            throw new  UnauthenticatedError("Sorry Password Wrong");
+          }
         } else {
-          res.json({ error: "sorry" });
+         throw new BadRequestError("Opps Some Thing Went Wrong !!");
         }
-      } else {
-        res.json({ data: "user Dosnt Exixt" });
+      } catch (error) {
+        next(error);
       }
+ 
     });
     //res.json({ data: "login" });
   },

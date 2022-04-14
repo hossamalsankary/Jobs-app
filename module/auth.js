@@ -25,7 +25,7 @@ const User = new mongoose.Schema({
 //decrypt password befor saveing it
 User.pre("save", async function () {
     console.log("hash");
-  var salt = await bcrypt.genSaltSync(10);
+  var salt =  bcrypt.genSaltSync(10);
   this.password = await bcrypt.hash(this.password, salt);
 });
 
@@ -33,7 +33,7 @@ User.pre("save", async function () {
 User.methods.createJWT = function() {
   return jwt.sign(
     {
-      data: { name: this.name, email: this.email },
+      data: {id:this._id, name: this.name, email: this.email },
     },
     process.env.SECRET,
     { expiresIn: "30d" }
